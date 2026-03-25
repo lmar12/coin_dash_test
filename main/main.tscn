@@ -1,0 +1,72 @@
+[gd_scene load_steps=13 format=3 uid="uid://cjry4oi440ja8"]
+
+[ext_resource type="Texture2D" uid="uid://cjy8npawbk13n" path="res://assets/background/grass.png" id="1_pjrb6"]
+[ext_resource type="Script" uid="uid://boqtjljwk3j7y" path="res://main/main.gd" id="1_xwkvk"]
+[ext_resource type="PackedScene" uid="uid://ch18s31sw0bf8" path="res://coin/coin.tscn" id="2_c651c"]
+[ext_resource type="PackedScene" uid="uid://jitrwpk06saw" path="res://player/player.tscn" id="2_xwkvk"]
+[ext_resource type="PackedScene" uid="uid://vmgsfjim61vu" path="res://powerup/power_up.tscn" id="3_bsumw"]
+[ext_resource type="PackedScene" uid="uid://bau5cnxdnx81v" path="res://ui/ui.tscn" id="3_kfbq2"]
+[ext_resource type="Script" uid="uid://c5bbdcpdd406" path="res://coin_container/coin_container.gd" id="4_3wy1v"]
+[ext_resource type="AudioStream" uid="uid://deyybrjw1n7vb" path="res://assets/sounds/Coin.wav" id="7_0i4oc"]
+[ext_resource type="AudioStream" uid="uid://telytxjmt05f" path="res://assets/sounds/Hit.wav" id="8_bsumw"]
+[ext_resource type="AudioStream" uid="uid://bxljet1w1d7nf" path="res://assets/jaunty-gumption-kevin-macleod-main-version-24900-01-58.mp3" id="8_fwcvl"]
+[ext_resource type="AudioStream" uid="uid://bf5rwe6wbjqv7" path="res://assets/sounds/Level.wav" id="9_fwcvl"]
+[ext_resource type="AudioStream" uid="uid://d2yjvx6b64rg0" path="res://assets/sounds/Powerup.wav" id="10_na0o7"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_xwkvk")
+coin = ExtResource("2_c651c")
+power_up = ExtResource("3_bsumw")
+play_time = 30
+
+[node name="UI" parent="." instance=ExtResource("3_kfbq2")]
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_pjrb6")
+stretch_mode = 1
+
+[node name="CoinContainer" type="Node" parent="."]
+script = ExtResource("4_3wy1v")
+coins = ExtResource("2_c651c")
+
+[node name="Player" parent="." instance=ExtResource("2_xwkvk")]
+
+[node name="PlayerStart" type="Marker2D" parent="."]
+position = Vector2(64, 128)
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_fwcvl")
+volume_db = -25.0
+parameters/looping = true
+
+[node name="Coin" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_0i4oc")
+volume_db = -12.0
+
+[node name="Hit" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_bsumw")
+
+[node name="Level" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("9_fwcvl")
+
+[node name="Powerup" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("10_na0o7")
+
+[node name="PowerUpTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="start_game" from="UI" to="." method="new_game"]
+[connection signal="hurt" from="Player" to="." method="_on_player_hurt"]
+[connection signal="pickup" from="Player" to="." method="_on_player_pickup"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
+[connection signal="timeout" from="PowerUpTimer" to="." method="_on_power_up_timer_timeout"]

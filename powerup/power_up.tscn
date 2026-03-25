@@ -1,0 +1,74 @@
+[gd_scene load_steps=14 format=3 uid="uid://vmgsfjim61vu"]
+
+[ext_resource type="Script" uid="uid://dhvf3v40s76a3" path="res://powerup/power_up.gd" id="1_sawye"]
+[ext_resource type="Texture2D" uid="uid://dsh6pwiw1nurt" path="res://assets/pow/pow-frame-1.png" id="1_tx47c"]
+[ext_resource type="Texture2D" uid="uid://ck1dst5ye68xy" path="res://assets/pow/pow-frame-2.png" id="2_sawye"]
+[ext_resource type="Texture2D" uid="uid://dnk5tvevnf72q" path="res://assets/pow/pow-frame-3.png" id="3_3h2m5"]
+[ext_resource type="Texture2D" uid="uid://blnho50wpvq1k" path="res://assets/pow/pow-frame-4.png" id="4_nqqlw"]
+[ext_resource type="Texture2D" uid="uid://yl2xmh2a0n03" path="res://assets/pow/pow-frame-5.png" id="5_m8efd"]
+[ext_resource type="Texture2D" uid="uid://bdgt6t1ubqlv1" path="res://assets/pow/pow-frame-6.png" id="6_3b40m"]
+[ext_resource type="Texture2D" uid="uid://dv4n24g8pmq3" path="res://assets/pow/pow-frame-7.png" id="7_g3clt"]
+[ext_resource type="Texture2D" uid="uid://bj6j3imewy5xw" path="res://assets/pow/pow-frame-8.png" id="8_ect8u"]
+[ext_resource type="Texture2D" uid="uid://blapxxlbe4g6f" path="res://assets/pow/pow-frame-9.png" id="9_4xb6m"]
+[ext_resource type="Texture2D" uid="uid://dsbx0wvgkd01f" path="res://assets/pow/pow-frame-10.png" id="10_pxlq5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vokji"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_tx47c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_sawye")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3h2m5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_nqqlw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_m8efd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_3b40m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_g3clt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ect8u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_4xb6m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pxlq5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 11.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k5ojf"]
+size = Vector2(24, 24)
+
+[node name="PowerUp" type="Area2D" groups=["power_up"]]
+modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_sawye")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_vokji")
+autoplay = "default"
+frame_progress = 0.69451
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_k5ojf")
+
+[node name="Lifetime" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="timeout" from="Lifetime" to="." method="_on_lifetime_timeout"]
